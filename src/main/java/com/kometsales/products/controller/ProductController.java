@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.kometsales.products.dto.InventaryDTO;
+import com.kometsales.products.dto.InventoryDTO;
+import com.kometsales.products.dto.ProductCodeDTO;
 import com.kometsales.products.dto.ProductDTO;
 import com.kometsales.products.exception.ProductNotFoundException;
 import com.kometsales.products.service.IProductService;
@@ -23,12 +24,13 @@ public class ProductController<InventaryDTO> {
     @Autowired
     private IProductService iProductService;
 
-    @GetMapping("/inventary")
-    public ResponseEntity<InventaryDTO> getInventaryProducts(@RequestParam(value = "companyId") Integer companyId) {
+    @GetMapping("/inventory")
+    public ResponseEntity<InventoryDTO> getInventoryProducts(@RequestParam(value = "companyId") Integer companyId) {
 
         try {
 
-            return new ResponseEntity<InventaryDTO>((InventaryDTO) iProductService.getInventaryProducts(companyId), HttpStatus.OK);
+            return new ResponseEntity<InventoryDTO>((InventoryDTO) iProductService.getInventoryProducts(companyId),
+                    HttpStatus.OK);
 
         } catch (ProductNotFoundException e) {
 
@@ -38,7 +40,8 @@ public class ProductController<InventaryDTO> {
     }
 
     @GetMapping("/products")
-    public ResponseEntity<List<ProductDTO>> getCustomerProducts(@RequestParam(value = "customerId") Integer customerId) {
+    public ResponseEntity<List<ProductDTO>> getCustomerProducts(
+            @RequestParam(value = "customerId") Integer customerId) {
 
         try {
 
@@ -51,5 +54,18 @@ public class ProductController<InventaryDTO> {
 
     }
 
-    
+    @GetMapping("/productsCode")
+    public ResponseEntity<List<ProductCodeDTO>> getProducstCode(@RequestParam(value = "companyId") Integer companyId) {
+
+        try {
+
+            return new ResponseEntity<List<ProductCodeDTO>>(iProductService.getProducstCode(companyId), HttpStatus.OK);
+
+        } catch (ProductNotFoundException e) {
+
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Products Code not fund");
+        }
+
+    }
+
 }

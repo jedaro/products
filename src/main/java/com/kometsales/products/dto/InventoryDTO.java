@@ -2,14 +2,14 @@ package com.kometsales.products.dto;
 
 import java.util.List;
 
-import com.kometsales.products.util.IInventaryProduct;
+import com.kometsales.products.util.IInventoryProduct;
 
 import lombok.Builder;
 import lombok.Data;
 
 @Builder
 @Data
-public class InventaryDTO {
+public class InventoryDTO {
     private Integer companyId;
-    private List<IInventaryProduct> products;
+    private List<IInventoryProduct> products;
 }

@@ -6,14 +6,17 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.kometsales.products.dto.InventaryDTO;
+import com.kometsales.products.dto.InventoryDTO;
+import com.kometsales.products.dto.ProductCodeDTO;
 import com.kometsales.products.dto.ProductDTO;
 import com.kometsales.products.exception.ProductNotFoundException;
+import com.kometsales.products.model.Product;
 import com.kometsales.products.repository.IInventoryRepository;
 import com.kometsales.products.repository.IProductRepository;
 import com.kometsales.products.service.IProductService;
-import com.kometsales.products.util.IInventaryProduct;
+import com.kometsales.products.util.IInventoryProduct;
 import com.kometsales.products.util.IProduct;
+import com.kometsales.products.util.IProductName;
 
 @Component
 public class ProductServiceImpl implements IProductService{
@@ -25,13 +28,13 @@ public class ProductServiceImpl implements IProductService{
     private IProductRepository iProductRepository;
 
     @Override
-    public InventaryDTO getInventaryProducts(Integer companyId) throws ProductNotFoundException {
+    public InventoryDTO getInventoryProducts(Integer companyId) throws ProductNotFoundException {
         
         try {
-            List<IInventaryProduct> result = iInventoryRepository.getInventaryProducts(companyId);
+            List<IInventoryProduct> result = iInventoryRepository.getInventory(companyId);
             if (!result.isEmpty()) {
 
-                return InventaryDTO.builder().companyId(companyId).products(result).build();
+                return InventoryDTO.builder().companyId(companyId).products(result).build();
             } else {
                 throw new ProductNotFoundException("Inventary not found");
             }
@@ -66,8 +69,54 @@ public class ProductServiceImpl implements IProductService{
     }
 
     @Override
-    public String getProducstCode(Integer companyId) {
-        throw new UnsupportedOperationException("Unimplemented method 'getProducstCode'");
+    public List<ProductCodeDTO> getProducstCode(Integer companyId) throws ProductNotFoundException{
+        try {
+            List<IProductName> products = iProductRepository.getProducts(companyId);
+
+            if (!products.isEmpty()) {
+                List<ProductCodeDTO> productsCode = new ArrayList<>();
+                for (IProductName p : products) {
+                    String code = getCodeByName(p.getProductName());
+                    productsCode.add(ProductCodeDTO.builder().productName(p.getProductName()).productCode(code).build());
+                }
+
+                return productsCode;
+            } else {
+                throw new ProductNotFoundException("Products code not found");
+            }
+            
+        }  catch (Exception e) {
+            throw new ProductNotFoundException("Products code not found");
+        }
+    }
+
+    /**
+     * Retorna el codigo del producto aplicando transformaciones a partir del nombre
+     * @param productName
+     * @return code
+     */
+    private String getCodeByName(String productName){
+
+        String code = "";
+        String[] words = productName.split(" ");
+
+        for (int i = 0; i < words.length; i++) {
+            String[] singleWord = words[i].split("");
+            code = code + singleWord[0];
+            int charDistinc = 0;
+            for (int j = 1; j < singleWord.length - 1; j++) {
+                for (int k = 1; k < singleWord.length - 1; k++) {
+                    if (singleWord[j] != singleWord[k]) {
+                        charDistinc++;
+                    }
+                }
+            }
+            code = code + singleWord[singleWord.length - 1];
+        }
+
+
+
+        return code;
     }
     
 }
