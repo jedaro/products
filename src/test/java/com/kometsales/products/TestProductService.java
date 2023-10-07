@@ -1,5 +1,7 @@
 package com.kometsales.products;
 
+import com.kometsales.products.dto.ProductCodeDTO;
+import com.kometsales.products.util.IProductName;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -117,9 +119,38 @@ public class TestProductService {
     }
 
     @Test
-    @DisplayName("Get Product Code Service")
-    @Disabled
-     void getProducstCode(){
+    @DisplayName("Get Product Code Service Ok")
+     void getProducstCode() throws ProductNotFoundException {
+        //given
+        Integer companyId = 1;
+        List<IProductName>  nameProducts = new ArrayList<>();
+        ProjectionFactory factory = new SpelAwareProxyProjectionFactory();
+        IProductName projection = factory.createProjection(IProductName.class);
+        projection.setProductName("Product 1");
+        nameProducts.add(0, projection);
+
+        //when
+        given(iProductRepository.getProducts(1)).willReturn(nameProducts);
+        List<ProductCodeDTO> products = productServiceImpl.getProducstCode(companyId);
+
+        //then
+        assertNotNull(products);
+        assertEquals(1, products.size());
+
+    }
+
+    @Test
+    @DisplayName("Get Product Code Service Exception")
+    void getProducstCodeNotFound() throws ProductNotFoundException {
+        //given
+        Integer companyId = 1;
+        List<IProductName>  nameProducts = new ArrayList<>();
+
+        //when
+        given(iProductRepository.getProducts(1)).willReturn(nameProducts);
+
+        //then
+        assertThrows(ProductNotFoundException.class, () ->  productServiceImpl.getProducstCode(companyId));
 
     }
 

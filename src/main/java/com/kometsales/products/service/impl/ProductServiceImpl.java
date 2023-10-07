@@ -71,11 +71,11 @@ public class ProductServiceImpl implements IProductService{
     @Override
     public List<ProductCodeDTO> getProducstCode(Integer companyId) throws ProductNotFoundException{
         try {
-            List<IProductName> products = iProductRepository.getProducts(companyId);
+            List<IProductName> namesProducts = iProductRepository.getProducts(companyId);
 
-            if (!products.isEmpty()) {
+            if (!namesProducts.isEmpty()) {
                 List<ProductCodeDTO> productsCode = new ArrayList<>();
-                for (IProductName p : products) {
+                for (IProductName p : namesProducts) {
                     String code = getCodeByName(p.getProductName());
                     productsCode.add(ProductCodeDTO.builder().productName(p.getProductName()).productCode(code).build());
                 }
@@ -98,25 +98,11 @@ public class ProductServiceImpl implements IProductService{
     private String getCodeByName(String productName){
 
         String code = "";
-        String[] words = productName.split(" ");
-
-        for (int i = 0; i < words.length; i++) {
-            String[] singleWord = words[i].split("");
-            code = code + singleWord[0];
-            int charDistinc = 0;
-            for (int j = 1; j < singleWord.length - 1; j++) {
-                for (int k = 1; k < singleWord.length - 1; k++) {
-                    if (singleWord[j] != singleWord[k]) {
-                        charDistinc++;
-                    }
-                }
-            }
-            code = code + singleWord[singleWord.length - 1];
-        }
 
 
 
-        return code;
+
+        return "code";
     }
     
 }

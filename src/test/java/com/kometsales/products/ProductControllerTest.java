@@ -1,5 +1,6 @@
 package com.kometsales.products;
 
+import com.kometsales.products.dto.ProductCodeDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,6 +111,47 @@ public class ProductControllerTest {
 
         mockMvc.perform(get("/api/products")
                 .param("customerId", String.valueOf(customerId)))
+
+                // then
+                .andDo(print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+
+    }
+
+    @Test
+    @DisplayName("Get Code Product Ok")
+    void getProductsCodeOk() throws Exception {
+        // given
+        Integer companyId = 1;
+        List<ProductCodeDTO> products = new ArrayList<>();
+        products.add(ProductCodeDTO.builder().productName("Red Roses 23cm").productCode("R1d-R3s-22m").build());
+
+        // when
+        given(iProductService.getProducstCode(companyId))
+                .willReturn(products);
+
+        mockMvc.perform(get("/api/productsCode")
+                        .param("companyId", String.valueOf(companyId)))
+
+                // then
+                .andDo(print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
+
+    }
+
+    @Test
+    @DisplayName("Get Product Code Not Found")
+    void getProductsCodeError() throws Exception {
+        // given
+        Integer companyId = 1;
+
+        // when
+        given(iProductService.getProducstCode(companyId))
+                .willThrow(new ProductNotFoundException("Code Product Not Found"));
+
+        mockMvc.perform(get("/api/productsCode")
+                        .param("companyId", String.valueOf(companyId)))
 
                 // then
                 .andDo(print())

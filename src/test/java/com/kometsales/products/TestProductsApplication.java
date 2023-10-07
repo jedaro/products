@@ -77,4 +77,34 @@ class TestProductsApplication {
             .expectStatus().isNotFound();
     }
 
+    @Test
+    @DisplayName("TestCase Get Products code Ok")
+    @Order(5)
+    public void getProductsCodeOk(){
+
+        // given
+        Integer companyId = 1;
+
+        // when
+        webTestClient.get().uri("/api/productsCode?companyId="+companyId).exchange()
+
+                // then
+                .expectStatus().isOk();
+    }
+
+    @Test
+    @DisplayName("TestCase Get Products Code Not Found")
+    @Order(6)
+    public void getProductsCodeNotFound(){
+
+        // given
+        Integer companyId = 10;
+
+        // when
+        webTestClient.get().uri("/api/productsCode?companyId="+companyId).exchange()
+
+                // then
+                .expectStatus().isNotFound();
+    }
+
 }
