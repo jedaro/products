@@ -31,7 +31,7 @@ Clone the project and use Maven to build the server
 Execute ProductsApplication in the project
 	
 ### Browser API Rest
-Open your browser at the following URL with query params
+Open your browser at the following URL with paths and query params
 
 https://localhost:8080/api/
 
