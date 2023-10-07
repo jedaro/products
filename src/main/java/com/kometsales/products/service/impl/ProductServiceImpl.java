@@ -17,6 +17,7 @@ import com.kometsales.products.service.IProductService;
 import com.kometsales.products.util.IInventoryProduct;
 import com.kometsales.products.util.IProduct;
 import com.kometsales.products.util.IProductName;
+import com.kometsales.products.util.Util;
 
 @Component
 public class ProductServiceImpl implements IProductService{
@@ -76,7 +77,7 @@ public class ProductServiceImpl implements IProductService{
             if (!namesProducts.isEmpty()) {
                 List<ProductCodeDTO> productsCode = new ArrayList<>();
                 for (IProductName p : namesProducts) {
-                    String code = getCodeByName(p.getProductName());
+                    String code = Util.getCodeProduct(p.getProductName());
                     productsCode.add(ProductCodeDTO.builder().productName(p.getProductName()).productCode(code).build());
                 }
 
@@ -90,19 +91,5 @@ public class ProductServiceImpl implements IProductService{
         }
     }
 
-    /**
-     * Retorna el codigo del producto aplicando transformaciones a partir del nombre
-     * @param productName
-     * @return code
-     */
-    private String getCodeByName(String productName){
-
-        String code = "";
-
-
-
-
-        return "code";
-    }
     
 }

@@ -2,7 +2,6 @@ package com.kometsales.products;
 
 import com.kometsales.products.dto.ProductCodeDTO;
 import com.kometsales.products.util.IProductName;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,13 +20,11 @@ import com.kometsales.products.service.impl.ProductServiceImpl;
 import com.kometsales.products.util.IInventoryProduct;
 import com.kometsales.products.util.IProduct;
 
-import reactor.core.scheduler.Scheduler.Worker;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
